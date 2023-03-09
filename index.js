@@ -58,14 +58,14 @@ app.event('app_home_opened', async ({ event, say }) => {
 
 app.action('open_modal', async ({ ack, payload, client }) => {
   // Acknowledge shortcut request
-  console.log("通過！！！！！！！")
-  ack();
+  await ack();
+  console.log('これ', payload.trigger_id)
 
   try {
     // Call the views.open method using the WebClient passed to listeners
     const result = await client.views.open({
       trigger_id: payload.trigger_id,
-      view: modalView
+      view: modalView()
     });
 
     console.log(result);
