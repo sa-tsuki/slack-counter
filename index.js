@@ -9,62 +9,61 @@ const app = new App({
 });
 
 
-app.event('app_home_opened', async ({ event, say }) => {
-  // Look up the user from DB
-  let user = store.getUser(event.user);
+// app.event('app_home_opened', async ({ event, say }) => {
+//   // Look up the user from DB
+//   let user = store.getUser(event.user);
 
-  if (!user) {
-    user = {
-      user: event.user,
-      channel: event.channel
-    };
-    store.addUser(user);
+//   if (!user) {
+//     user = {
+//       user: event.user,
+//       channel: event.channel
+//     };
+//     store.addUser(user);
     
-    await say({blocks:[
-        {
-            "type": "section",
-            "block_id": "button-block",
-            "text": {
-                "type": "mrkdwn",
-                "text": "Events API から直接モーダルを開くことはできません。ボタンをクリックしてもらう必要があります。",
-            },
-            "accessory": {
-                "type": "button",
-                "text": {"type": "plain_text", "text": "モーダルを開く"},
-                "value": "clicked",
-                "action_id": "open_modal",
-            },
-        }
-    ]});
-  } else {
-    await say({blocks:[
-        {
-            "type": "section",
-            "block_id": "button-block",
-            "text": {
-                "type": "mrkdwn",
-                "text": "ボタンをクリックしてもらう必要があります。",
-            },
-            "accessory": {
-                "type": "button",
-                "text": {"type": "plain_text", "text": "モーダルを開く"},
-                "value": "clicked",
-                "action_id": "open_modal",
-            },
-        }
-    ]});
-  }
-});
+//     await say({blocks:[
+//         {
+//             "type": "section",
+//             "block_id": "button-block",
+//             "text": {
+//                 "type": "mrkdwn",
+//                 "text": "Events API から直接モーダルを開くことはできません。ボタンをクリックしてもらう必要があります。",
+//             },
+//             "accessory": {
+//                 "type": "button",
+//                 "text": {"type": "plain_text", "text": "モーダルを開く"},
+//                 "value": "clicked",
+//                 "action_id": "open_modal",
+//             },
+//         }
+//     ]});
+//   } else {
+//     await say({blocks:[
+//         {
+//             "type": "section",
+//             "block_id": "button-block",
+//             "text": {
+//                 "type": "mrkdwn",
+//                 "text": "ボタンをクリックしてもらう必要があります。",
+//             },
+//             "accessory": {
+//                 "type": "button",
+//                 "text": {"type": "plain_text", "text": "モーダルを開く"},
+//                 "value": "clicked",
+//                 "action_id": "open_modal",
+//             },
+//         }
+//     ]});
+//   }
+// });
 
-app.action('open_modal', async ({ ack, payload, client }) => {
+app.command('/count', async ({ ack, body, client, logger }) => {
   // Acknowledge shortcut request
   await ack();
-  console.log('これ', payload.trigger_id)
 
   try {
     // Call the views.open method using the WebClient passed to listeners
     const result = await client.views.open({
-      trigger_id: payload.trigger_id,
+      trigger_id: body.trigger_id,
       view: modalView()
     });
 
