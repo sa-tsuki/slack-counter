@@ -19,39 +19,51 @@ app.event('app_home_opened', async ({ event, say }) => {
       channel: event.channel
     };
     store.addUser(user);
-    await say({blocks:[
-        {
-            "type": "section",
-            "block_id": "button-block",
-            "text": {
-                "type": "mrkdwn",
-                "text": "Events API から直接モーダルを開くことはできません。ボタンをクリックしてもらう必要があります。",
+    await say({
+        type: 'modal',
+        // callback_id が view を特定するための識別子
+        callback_id: 'view_1',
+        title: {
+          type: 'plain_text',
+          text: 'Modal title'
+        },
+        blocks: [
+          {
+            type: 'section',
+            text: {
+              type: 'mrkdwn',
+              text: 'Welcome to a modal with _blocks_'
             },
-            "accessory": {
-                "type": "button",
-                "text": {"type": "plain_text", "text": "モーダルを開く"},
-                "value": "clicked",
-                "action_id": "open-modal-button",
+            accessory: {
+              type: 'button',
+              text: {
+                type: 'plain_text',
+                text: 'Click me!'
+              },
+              action_id: 'button_abc'
+            }
+          },
+          {
+            type: 'input',
+            block_id: 'input_c',
+            label: {
+              type: 'plain_text',
+              text: 'What are your hopes and dreams?'
             },
+            element: {
+              type: 'plain_text_input',
+              action_id: 'dreamy_input',
+              multiline: true
+            }
+          }
+        ],
+        submit: {
+          type: 'plain_text',
+          text: 'Submit'
         }
-    ]});
+      });
   } else {
-    await say({blocks:[
-        {
-            "type": "section",
-            "block_id": "button-block",
-            "text": {
-                "type": "mrkdwn",
-                "text": "ボタンをクリックしてもらう必要があります。",
-            },
-            "accessory": {
-                "type": "button",
-                "text": {"type": "plain_text", "text": "モーダルを開く"},
-                "value": "clicked",
-                "action_id": openModal(),
-            },
-        }
-    ]});
+    await say(`よう！`);
   }
   
 
