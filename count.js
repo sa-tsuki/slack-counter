@@ -1,12 +1,14 @@
 const channelId = process.env.CHANNEL_ID;
 
-exports.populateConversationStore = async (client) => {
+exports.getConversationHistory = async (client) => {
   let conversationHistory;
   
   try {
     // Call the conversations.history method using WebClient
     const result = await client.conversations.history({
-      channel: channelId
+      channel: channelId,
+      oldest: slicedOldest,
+      latest: slicedLatest,
     });
 
     conversationHistory = result.messages;
