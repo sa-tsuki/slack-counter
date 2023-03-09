@@ -48,7 +48,7 @@ app.event('app_home_opened', async ({ event, say }) => {
                 "type": "button",
                 "text": {"type": "plain_text", "text": "モーダルを開く"},
                 "value": "clicked",
-                "action_id": "open-modal-button",
+                "action_id": openModal(),
             },
         }
     ]});
@@ -59,7 +59,8 @@ app.event('app_home_opened', async ({ event, say }) => {
 
 });
 
-  app.event('app_mention', async ({ event, client }) => {
+const openModal = () => {
+    app.event('app_mention', async ({ event, client }) => {
   try {
     // チャンネルを取得する
     const channel = await client.conversations.info({
@@ -75,6 +76,7 @@ app.event('app_home_opened', async ({ event, say }) => {
     console.error(error);
   }
 });
+}
 
 
 // Start your app
