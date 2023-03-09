@@ -1,5 +1,6 @@
 const { App,LogLevel } = require('@slack/bolt');
 const store = require('./store');
+const {modalView} = require('./views');
 
 const app = new App({
   signingSecret: process.env.SLACK_SIGNING_SECRET,
@@ -20,10 +21,25 @@ app.event('app_home_opened', async ({ event, say }) => {
     store.addUser(user);
     await say(`Hello world, and welcome <@${user.user}>!`);
   } else {
-    await say('Hi again!');
+    await say('Hi again !');
   }
   
-  
+  app.event('app_mention', async ({ event, client }) => {
+  try {
+    // チャンネルを取得する
+    const channel = await client.conversations.info({
+      channel: event.channel,
+    });
+
+    // モーダルを表示する
+    await client.views.open({
+      trigger_id: event.trigger_id,
+      view: modalView(channel.channel.name),
+    });
+  } catch (error) {
+    console.error(error);
+  }
+});
   
 
 });
