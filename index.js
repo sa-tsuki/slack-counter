@@ -74,24 +74,24 @@ app.command('/count', async ({ ack, body, client, logger }) => {
   }
 });
 
-app.action('count_start', async ({ ack, body, view, client, logger }) => {
+app.view('start_count', async ({ ack, body, view, client, logger }) => {
   // モーダルでのデータ送信リクエストを確認
   await ack();
 
   // 入力値を使ってやりたいことをここで実装 - ここでは DB に保存して送信内容の確認を送っている
 
   // block_id: block_1 という input ブロック内で action_id: input_a の場合の入力
-  const val = view['state']['values']['block_1']['input_a'];
+  const startDate = view['state']['values']['date-start']['datepicker-action']['selected_date']
+  const endDate = view['state']['values']['date-end']['datepicker-action']['selected_date']
+  const user = body['user']['id'];
   
-  console.log("ここにきた")
-
 
   // ユーザーにメッセージを送信
   try {
-    // await client.chat.postMessage({
-    //   channel: user,
-    //   text: msg
-    // });
+    await client.chat.postMessage({
+      channel: user,
+      text: startDate + endDate
+    });
   }
   catch (error) {
     logger.error(error);

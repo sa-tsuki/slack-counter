@@ -57,6 +57,6 @@ exports.modalView = () =>  {
 		}
 	],
 	"type": "modal",
-  "callback_id": "counter_modal",
+  "callback_id": "start_count",
 }
 }
