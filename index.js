@@ -38,7 +38,7 @@ app.view('start_count', async ({ ack, body, view, client, logger }) => {
   const endDate = view['state']['values']['date-end']['datepicker-action']['selected_date']
   const user = body['user']['id'];
   
-  const conversationHistory = await getConversationHistory(client)
+  const conversationHistory = await getConversationHistory(client, startDate, endDate)
   
   // ユーザーにメッセージを送信
   try {
