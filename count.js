@@ -1,28 +1,20 @@
-let conversationsStore = {};
+const channelId = process.env.CHANNEL_ID;
 
 exports.populateConversationStore = async (client) => {
+  let conversationHistory;
+  
   try {
-    // Call the conversations.list method using the WebClient
-    const result = await client.conversations.list();
+    // Call the conversations.history method using WebClient
+    const result = await client.conversations.history({
+      channel: channelId
+    });
 
-    saveConversations(result.channels);
-    
-    return conversationsStore
+    conversationHistory = result.messages;
+
+    // Print results
+    console.log(conversationHistory.length + " messages found in " + channelId);
   }
   catch (error) {
     console.error(error);
   }
-}
-
-// Put conversations into the JavaScript object
-function saveConversations(conversationsArray) {
-  let conversationId = '';
-  
-  conversationsArray.forEach(function(conversation){
-    // Key conversation info on its unique ID
-    conversationId = conversation["id"];
-    
-    // Store the entire conversation object (you may not need all of the info)
-    conversationsStore[conversationId] = conversation;
-  });
 }
