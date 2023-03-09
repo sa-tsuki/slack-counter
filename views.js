@@ -1,26 +1,59 @@
 exports.modalView = () =>  {
   return {
-  "type": "modal",
-  "title": {
-    "type": "plain_text",
-    "text": "モーダルのタイトル"
-  },
-  "submit": {
-    "type": "plain_text",
-    "text": "送信"
-  },
-  "close": {
-    "type": "plain_text",
-    "text": "キャンセル"
-  },
-  "blocks": [
-    {
-      "type": "section",
-      "text": {
-        "type": "plain_text",
-        "text": "モーダルの本文"
-      }
-    }
-  ]
+	"title": {
+		"type": "plain_text",
+		"text": "#ええやんカウンター"
+	},
+	"submit": {
+		"type": "plain_text",
+		"text": "計測"
+	},
+	"blocks": [
+		{
+			"type": "section",
+			"text": {
+				"type": "plain_text",
+				"text": "期間を選択してください。",
+				"emoji": true
+			}
+		},
+		{
+			"type": "input",
+			"element": {
+				"type": "datepicker",
+				"initial_date": "2023-1-1",
+				"placeholder": {
+					"type": "plain_text",
+					"text": "Select a date",
+					"emoji": true
+				},
+				"action_id": "datepicker-action"
+			},
+			"label": {
+				"type": "plain_text",
+				"text": "いつから",
+				"emoji": true
+			}
+		},
+		{
+			"type": "input",
+			"element": {
+				"type": "datepicker",
+				"initial_date": "2023-1-31",
+				"placeholder": {
+					"type": "plain_text",
+					"text": "Select a date",
+					"emoji": true
+				},
+				"action_id": "datepicker-action"
+			},
+			"label": {
+				"type": "plain_text",
+				"text": "いつまで",
+				"emoji": true
+			}
+		}
+	],
+	"type": "modal"
 }
 }
