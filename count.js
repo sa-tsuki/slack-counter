@@ -1,6 +1,6 @@
 let conversationsStore = {};
 
-export async function populateConversationStore() {
+exports.populateConversationStore = async (client) => {
   try {
     // Call the conversations.list method using the WebClient
     const result = await client.conversations.list();
@@ -15,7 +15,7 @@ export async function populateConversationStore() {
 }
 
 // Put conversations into the JavaScript object
-export function saveConversations(conversationsArray) {
+function saveConversations(conversationsArray) {
   let conversationId = '';
   
   conversationsArray.forEach(function(conversation){
@@ -26,5 +26,3 @@ export function saveConversations(conversationsArray) {
     conversationsStore[conversationId] = conversation;
   });
 }
-
-populateConversationStore();
