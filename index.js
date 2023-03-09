@@ -19,7 +19,7 @@ app.event('app_home_opened', async ({ event, say }) => {
       channel: event.channel
     };
     store.addUser(user);
-    await say(
+    await say({blocks:[
         {
             "type": "section",
             "block_id": "button-block",
@@ -34,9 +34,9 @@ app.event('app_home_opened', async ({ event, say }) => {
                 "action_id": "open-modal-button",
             },
         }
-    );
+    ]});
   } else {
-    await say(
+    await say({blocks:[
         {
             "type": "section",
             "block_id": "button-block",
@@ -51,7 +51,7 @@ app.event('app_home_opened', async ({ event, say }) => {
                 "action_id": "open-modal-button",
             },
         }
-    );
+    ]});
   }
   
 
