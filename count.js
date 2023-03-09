@@ -2,25 +2,19 @@ const channelId = process.env.CHANNEL_ID;
 
 exports.getConversationHistory = async (client, startDate, endDate) => {
   let conversationHistory;
-  const f_startDate = `${startDate}T00:00:00.000Z`
-  const f_endDate = `${endDate}T23:59:59.000Z`
+  const f_startDate = new Date(startDate)
+  const n_endDate = new Date(endDate)
+  const f_endDate = String(n_endDate).replace('00:00:00', '23:59:59')
   const timestampStartDate = new Date(f_startDate).getTime().toString().slice(0, -3);
   const timestampEndDate = new Date(f_endDate).getTime().toString().slice(0, -3);
-  
-  
-    console.log(f_startDate)
-  console.log(f_endDate)
-  // 2023-02-25T07:26:40Z
-  console.log(timestampStartDate)
-  console.log(timestampEndDate)
   
   
   try {
     // Call the conversations.history method using WebClient
     const result = await client.conversations.history({
       channel: channelId,
-      oldest: 1675177200,
-      latest: 1677596399,
+      oldest: timestampStartDate,
+      latest: timestampEndDate,
     });
 
     conversationHistory = result.messages;
