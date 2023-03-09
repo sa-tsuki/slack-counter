@@ -60,19 +60,20 @@ app.event('app_home_opened', async ({ event, say }) => {
 });
 
 const openModal = () => {
-    app.event('app_mention', async ({ event, client }) => {
+app.shortcut('open_modal', async ({ ack, payload, client }) => {
+  // Acknowledge shortcut request
+  ack();
+
   try {
-    // チャンネルを取得する
-    const channel = await client.conversations.info({
-      channel: event.channel,
+    // Call the views.open method using the WebClient passed to listeners
+    const result = await client.views.open({
+      trigger_id: payload.trigger_id,
+      view: modalView
     });
 
-    // モーダルを表示する
-    await client.views.open({
-      trigger_id: event.trigger_id,
-      view: modalView,
-    });
-  } catch (error) {
+    console.log(result);
+  }
+  catch (error) {
     console.error(error);
   }
 });
