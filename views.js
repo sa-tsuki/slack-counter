@@ -1,4 +1,5 @@
-export const modalView = {
+exports.modalView = () =>  {
+  return {
   "type": "modal",
   "title": {
     "type": "plain_text",
@@ -21,4 +22,5 @@ export const modalView = {
       }
     }
   ]
+}
 }

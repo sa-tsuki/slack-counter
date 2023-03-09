@@ -19,11 +19,46 @@ app.event('app_home_opened', async ({ event, say }) => {
       channel: event.channel
     };
     store.addUser(user);
-    await say(`Hello world, and welcome <@${user.user}>!`);
+    await say(
+        {
+            "type": "section",
+            "block_id": "button-block",
+            "text": {
+                "type": "mrkdwn",
+                "text": "Events API から直接モーダルを開くことはできません。ボタンをクリックしてもらう必要があります。",
+            },
+            "accessory": {
+                "type": "button",
+                "text": {"type": "plain_text", "text": "モーダルを開く"},
+                "value": "clicked",
+                "action_id": "open-modal-button",
+            },
+        }
+    );
   } else {
-    await say('Hi again !');
+    await say(
+        {
+            "type": "section",
+            "block_id": "button-block",
+            "text": {
+                "type": "mrkdwn",
+                "text": "ボタンをクリックしてもらう必要があります。",
+            },
+            "accessory": {
+                "type": "button",
+                "text": {"type": "plain_text", "text": "モーダルを開く"},
+                "value": "clicked",
+                "action_id": "open-modal-button",
+            },
+        }
+    );
   }
   
+
+  
+
+});
+
   app.event('app_mention', async ({ event, client }) => {
   try {
     // チャンネルを取得する
@@ -34,14 +69,11 @@ app.event('app_home_opened', async ({ event, say }) => {
     // モーダルを表示する
     await client.views.open({
       trigger_id: event.trigger_id,
-      view: modalView(channel.channel.name),
+      view: modalView,
     });
   } catch (error) {
     console.error(error);
   }
-});
-  
-
 });
 
 
