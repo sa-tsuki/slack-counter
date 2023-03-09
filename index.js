@@ -32,7 +32,7 @@ app.event('app_home_opened', async ({ event, say }) => {
                 "type": "button",
                 "text": {"type": "plain_text", "text": "モーダルを開く"},
                 "value": "clicked",
-                "action_id": "openModal",
+                "action_id": "open_modal",
             },
         }
     ]});
@@ -49,7 +49,7 @@ app.event('app_home_opened', async ({ event, say }) => {
                 "type": "button",
                 "text": {"type": "plain_text", "text": "モーダルを開く"},
                 "value": "clicked",
-                "action_id": "openModal",
+                "action_id": "open_modal",
             },
         }
     ]});
