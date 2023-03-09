@@ -22,7 +22,7 @@ exports.modalView = () =>  {
 			"type": "input",
 			"element": {
 				"type": "datepicker",
-				"initial_date": "2023-1-1",
+				"initial_date": "2023-2-1",
 				"placeholder": {
 					"type": "plain_text",
 					"text": "Select a date",
@@ -41,7 +41,7 @@ exports.modalView = () =>  {
 			"type": "input",
 			"element": {
 				"type": "datepicker",
-				"initial_date": "2023-1-31",
+				"initial_date": "2023-2-28",
 				"placeholder": {
 					"type": "plain_text",
 					"text": "Select a date",

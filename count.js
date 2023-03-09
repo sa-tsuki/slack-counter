@@ -2,9 +2,9 @@ const channelId = process.env.CHANNEL_ID;
 
 exports.getConversationHistory = async (client, startDate, endDate) => {
   let conversationHistory;
-  const f_startDate = `${startDate}T00:00:00Z`
-  const f_endDate = `${startDate}T23:59:59Z`
-  const timestampStartDate = new Date(f_startDate).getTime()
+  const f_startDate = `${startDate}T00:00:00.000Z`
+  const f_endDate = `${endDate}T23:59:59.000Z`
+  const timestampStartDate = new Date(f_startDate).getTime().toString().slice(0, -3);
   const timestampEndDate = new Date(f_endDate).getTime().toString().slice(0, -3);
   
   
