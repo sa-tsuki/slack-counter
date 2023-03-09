@@ -19,6 +19,7 @@ app.event('app_home_opened', async ({ event, say }) => {
       channel: event.channel
     };
     store.addUser(user);
+    
     await say({blocks:[
         {
             "type": "section",
@@ -31,7 +32,7 @@ app.event('app_home_opened', async ({ event, say }) => {
                 "type": "button",
                 "text": {"type": "plain_text", "text": "モーダルを開く"},
                 "value": "clicked",
-                "action_id": openModal(),
+                "action_id": "openModal",
             },
         }
     ]});
@@ -48,20 +49,16 @@ app.event('app_home_opened', async ({ event, say }) => {
                 "type": "button",
                 "text": {"type": "plain_text", "text": "モーダルを開く"},
                 "value": "clicked",
-                "action_id": openModal(),
+                "action_id": "openModal",
             },
         }
     ]});
   }
-  
-
-  
-
 });
 
-const openModal = () => {
-app.shortcut('open_modal', async ({ ack, payload, client }) => {
+app.action('open_modal', async ({ ack, payload, client }) => {
   // Acknowledge shortcut request
+  console.log("通過！！！！！！！")
   ack();
 
   try {
@@ -77,7 +74,6 @@ app.shortcut('open_modal', async ({ ack, payload, client }) => {
     console.error(error);
   }
 });
-}
 
 
 // Start your app
