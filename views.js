@@ -56,6 +56,7 @@ exports.modalView = () =>  {
 			}
 		}
 	],
-	"type": "modal"
+	"type": "modal",
+  "callback_id": "counter_modal",
 }
 }
