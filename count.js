@@ -1,7 +1,7 @@
 const channelId = process.env.CHANNEL_ID;
 let conversationsStore = {};
 
-// スレッドの一言目取得
+// コメント取得
 exports.getChannels = async (client) => {
   try {
     // Call the conversations.list method using the WebClient
@@ -12,11 +12,6 @@ exports.getChannels = async (client) => {
   catch (error) {
     console.error(error);
   }
-}
-
-// スレッド取得のオブジェクト整頓
-function saveConversations(conversationsArray) {
-
 }
 
 exports.getConversationHistory = async (client, startDate, endDate, channels) => {
