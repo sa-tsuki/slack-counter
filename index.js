@@ -40,6 +40,7 @@ app.view('start_count', async ({ ack, body, view, client, logger }) => {
   
   const channels = await getChannels(client)
   const conversationHistory = await getConversationHistory(client, startDate, endDate)
+  const 
   
   // ユーザーにメッセージを送信
   try {
