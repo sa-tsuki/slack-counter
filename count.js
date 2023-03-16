@@ -98,11 +98,13 @@ exports.getReplis = async (client, conversations) => {
   }));
 
 
-  resultArray.filter((message) => {
+  const formetterdArray  = resultArray.filter((message) => {
     return message.text.match(`<@`);
   });
+  
+  console.log("リザルーーーーーーーーーーーーど",formetterdArray)
 
-  return resultArray;
+  return formetterdArray;
 };
 
 // スレッド内のリプライ取得
