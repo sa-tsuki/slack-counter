@@ -83,7 +83,8 @@ exports.getConversationHistory = async (
 exports.getReplis = async (client, conversations) => {
   let resultArray = [];
 
-  conversations.forEach(async (message, x) => {
+  // Promise.all と map を使用してすべての非同期処理が完了するのを待つ
+  await Promise.all(conversations.map(async (message, x) => {
     try {
       const result = await client.conversations.replies({
         channel: channelId,
@@ -95,21 +96,19 @@ exports.getReplis = async (client, conversations) => {
     } catch (error) {
       console.error(error);
     }
-  });
+  }));
 
   console.log("オブジェクト！！！！！！！！！！！！！！！", resultArray);
 
-  resultArray.filter((message) => {
+  const filteredArray = resultArray.filter((message) => {
     return message.text.match(`<@`);
   });
 
-  console.log("結果発表！！！！！！！！！！！！！！！", resultArray);
-  return resultArray;
+  return filteredArray;
 };
 
 exports.getDate = (members, allMessages) => {
   allMessages.forEach((message) => {
-    if (message.text.match(`<@`)) {
       if (
         message.text.match(`|ええやん>`) ||
         message.text.match(`|さすが>`) ||
@@ -121,6 +120,5 @@ exports.getDate = (members, allMessages) => {
           }
         });
       }
-    }
   });
 };
