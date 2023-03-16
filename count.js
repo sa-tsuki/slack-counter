@@ -5,8 +5,13 @@ let conversationsStore = {};
 exports.getWorkspaceMembers = async (client) => {
   try {
     const result = await client.users.list();
-    console.log("メンバーメンバーメンバーメンバーメンバー", result)
-    return result.members;
+    const members = result.members.map(member => {
+      return {
+      id:member.id,
+      name: member.name  
+      }
+    })
+    return members
   } catch (error) {
     console.error(`Error fetching users: ${error}`);
     return [];
