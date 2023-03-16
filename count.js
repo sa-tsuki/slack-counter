@@ -106,15 +106,15 @@ exports.getReplis = async (client, conversations) => {
 };
 
 exports.getDate = (members, allMessages) => {
+  
+  console.log("メッセ＾ーーーーーーーーーじ",allMessages)
   // カウントを保存する配列を初期化
   const nameCounts = [];
 
+  const patterns = [/|ええやん>/, /|さすが>/, /|ありがとう>/];
+
   allMessages.forEach((message) => {
-    if (
-      message.text.match(`|ええやん>`) ||
-      message.text.match(`|さすが>`) ||
-      message.text.match(`|ありがとう>`)
-    ) {
+    if (patterns.some((pattern) => pattern.test(message.text))) {
       members.forEach((member) => {
         if (message.text.match(member.id)) {
           console.log(member.name);
