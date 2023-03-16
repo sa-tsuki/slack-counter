@@ -1,6 +1,19 @@
 const channelId = process.env.CHANNEL_ID;
 let conversationsStore = {};
 
+// ユーザー取得
+exports.getWorkspaceMembers = async (client) => {
+  try {
+    const result = await client.users.list();
+    console.log("メンバーメンバーメンバーメンバーメンバー", result)
+    return result.members;
+  } catch (error) {
+    console.error(`Error fetching users: ${error}`);
+    return [];
+  }
+}
+
+
 // コメント取得
 exports.getChannels = async (client) => {
   try {
@@ -65,7 +78,7 @@ exports.getReplis = async (client, conversations) => {
           ts: message.ts
         });
         
-        console.log('リザルト', x, result)
+        // console.log('リザルト', x, result)
       })    
   }
   catch (error) {

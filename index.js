@@ -1,7 +1,7 @@
 const { App,LogLevel } = require('@slack/bolt');
 const store = require('./store');
 const {modalView} = require('./views');
-const {getChannels, getConversationHistory, getReplis} = require('./count');
+const {getWorkspaceMembers, getChannels, getConversationHistory, getReplis} = require('./count');
 
 const app = new App({
   signingSecret: process.env.SLACK_SIGNING_SECRET,
@@ -38,6 +38,7 @@ app.view('start_count', async ({ ack, body, view, client, logger }) => {
   const endDate = view['state']['values']['date-end']['datepicker-action']['selected_date']
   const user = body['user']['id'];
   
+  const members = await getWorkspaceMembers(client)
   const channels = await getChannels(client)
   const conversationHistory = await getConversationHistory(client, startDate, endDate, channels)
   const allReplis = await getReplis(client, conversationHistory)
