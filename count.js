@@ -75,16 +75,19 @@ exports.getConversationHistory = async (client, startDate, endDate, channels) =>
 
 // スレッド内のリプライ取得
 exports.getReplis = async (client, conversations) => {
-    try {
-      
-      conversations.forEach(async (message, x) =>  {
+  let resultArray = []
+  
+    try {    
+      const conversationsFilter= conversations.forEach(async (message, x) =>  {
         const result = await client.conversations.replies({
           channel:channelId,
           ts: message.ts
         });
         
-        // console.log('リザルト', x, result)
+        resultArray = [...resultArray,]
       })    
+      
+    return resultArray
   }
   catch (error) {
     console.error(error);
@@ -93,6 +96,14 @@ exports.getReplis = async (client, conversations) => {
 
 exports.getDate = (members, allMessages) => {
   allMessages.forEach(message => {
-    if(message.text)
+    if(message.text.match(`<@`)){
+         if(message.text.match(`|ええやん>`) || message.text.match(`|さすが>`) || message.text.match(`|ありがとう>`)){
+           members.forEach(member => {
+             if(message.text.match(member.id)){
+               console.log(member.name)
+             }
+           })
+         }
+     }
   })
 }
