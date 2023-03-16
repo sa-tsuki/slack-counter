@@ -41,15 +41,13 @@ exports.getConversationHistory = async (client, startDate, endDate, channels) =>
     
     let conversationHistory;
     const result = await client.conversations.history({
-      channel: `C2QHFNPJS`,
+      channel: channelId,
       oldest: timestampStartDate,
       latest: timestampEndDate,
     });
 
-    conversationHistory = result.messages;
-
-    // Print results
-    console.log(conversationHistory.length + " messages found in " + `C2QHFNPJS`);
+    conversationHistory = result.messages;    
+    return conversationHistory
     
   }
   catch (error) {
@@ -58,15 +56,17 @@ exports.getConversationHistory = async (client, startDate, endDate, channels) =>
 }
 
 // スレッド内のリプライ取得
-// exports.getReplis = async (client, conversations) => {
-//     try {
-//       conversations.messages.forEach(async (message) =>  {
-//         const result = await client.app.client.conversations.replies({
-//           channel:""
-//         });
-//       })    
-//   }
-//   catch (error) {
-//     console.error(error);
-//   }
-// }
+exports.getReplis = async (client, conversations) => {
+    try {
+      
+      conversations.forEach(async (message) =>  {
+        const result = await client.conversations.replies({
+          channel:channelId,
+          ts: message.ts
+        });
+      })    
+  }
+  catch (error) {
+    console.error(error);
+  }
+}
