@@ -59,11 +59,13 @@ exports.getConversationHistory = async (client, startDate, endDate, channels) =>
 exports.getReplis = async (client, conversations) => {
     try {
       
-      conversations.forEach(async (message) =>  {
+      conversations.forEach(async (message, x) =>  {
         const result = await client.conversations.replies({
           channel:channelId,
           ts: message.ts
         });
+        
+        console.log('リザルト', x, result)
       })    
   }
   catch (error) {
