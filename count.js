@@ -79,7 +79,7 @@ exports.getConversationHistory = async (
   }
 };
 
-// スレッド内のリプライ取得
+// リプライ全て取得
 exports.getReplis = async (client, conversations) => {
   let resultArray = [];
 
@@ -98,16 +98,17 @@ exports.getReplis = async (client, conversations) => {
   }));
 
 
-  const filteredArray = resultArray.filter((message) => {
+  resultArray.filter((message) => {
     return message.text.match(`<@`);
   });
 
-  return filteredArray;
+  return resultArray;
 };
 
+// スレッド内のリプライ取得
 exports.getDate = (members, allMessages) => {
   
-  console.log("メッセ＾ーーーーーーーーーじ",allMessages)
+  console.log(allMessages)
   // カウントを保存する配列を初期化
   const nameCounts = [];
 
@@ -116,7 +117,8 @@ exports.getDate = (members, allMessages) => {
   allMessages.forEach((message) => {
     if (patterns.some((pattern) => pattern.test(message.text))) {
       members.forEach((member) => {
-        if (message.text.match(member.id)) {
+        const mentionPattern = new RegExp(`<@${member.id}>`);
+        if (mentionPattern.test(message.text)) {
           console.log(member.name);
 
           // 配列内にメンバー名が存在するか確認し、カウントをインクリメント
