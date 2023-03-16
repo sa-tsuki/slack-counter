@@ -24,10 +24,24 @@ exports.getConversationHistory = async (client, startDate, endDate, channels) =>
   
   try {
     // Call the conversations.history method using WebClient
-    channels.forEach(async(channel) => {
+//     ここは権限が降りてから
+//     channels.forEach(async(channel) => {
+//     let conversationHistory;
+//     const result = await client.conversations.history({
+//       channel: channel.id,
+//       oldest: timestampStartDate,
+//       latest: timestampEndDate,
+//     });
+
+//     conversationHistory = result.messages;
+
+//     // Print results
+//     console.log(conversationHistory.length + " messages found in " + channel.id);
+//     })
+    
     let conversationHistory;
     const result = await client.conversations.history({
-      channel: channel.id,
+      channel: `C2QHFNPJS`,
       oldest: timestampStartDate,
       latest: timestampEndDate,
     });
@@ -35,8 +49,8 @@ exports.getConversationHistory = async (client, startDate, endDate, channels) =>
     conversationHistory = result.messages;
 
     // Print results
-    console.log(conversationHistory.length + " messages found in " + channel.id);
-    })
+    console.log(conversationHistory.length + " messages found in " + `C2QHFNPJS`);
+    
   }
   catch (error) {
     console.error(error);

@@ -20,7 +20,7 @@ app.command('/count', async ({ ack, body, client, logger }) => {
       view: modalView()
     });
 
-    console.log(result);
+    // console.log(result);
   }
   catch (error) {
     console.error(error);
