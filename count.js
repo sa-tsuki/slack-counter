@@ -78,7 +78,7 @@ exports.getReplis = async (client, conversations) => {
   let resultArray = []
   
     try {    
-      const conversationsArray = await conversations.forEach(async (message, x) =>  {
+      const conversationsArray = conversations.forEach(async (message, x) =>  {
         const result = await client.conversations.replies({
           channel:channelId,
           ts: message.ts
@@ -88,10 +88,10 @@ exports.getReplis = async (client, conversations) => {
         resultArray = [...resultArray, ...result.messages]
       })    
       
-      await console.log("オブジェクト！！！！！！！！！！！！！！！", resultArray) 
+      console.log("オブジェクト！！！！！！！！！！！！！！！", resultArray) 
     
       
-      resultArray = await resultArray.filter(message => {
+      resultArray = resultArray.filter(message => {
         return message.text.match(`<@`)
       })
       
