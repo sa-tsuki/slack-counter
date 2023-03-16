@@ -83,16 +83,15 @@ exports.getConversationHistory = async (
 exports.getReplis = async (client, conversations) => {
   let resultArray = [];
 
-  const conversationsArray = conversations.forEach(async (message, x) => {
-    let preResultArray = []
+  conversations.forEach(async (message, x) => {
     try {
       const result = await client.conversations.replies({
         channel: channelId,
         ts: message.ts,
       });
       
-      preResultArray = [...resultArray, ...result.messages];
-      resultArray = preResultArray
+      resultArray = [...resultArray, ...result.messages];
+      console.log("ここの結果",resultArray)
     } catch (error) {
       console.error(error);
     }
