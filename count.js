@@ -92,13 +92,11 @@ exports.getReplis = async (client, conversations) => {
       });
       
       resultArray = [...resultArray, ...result.messages];
-      console.log("ここの結果",resultArray)
     } catch (error) {
       console.error(error);
     }
   }));
 
-  console.log("オブジェクト！！！！！！！！！！！！！！！", resultArray);
 
   const filteredArray = resultArray.filter((message) => {
     return message.text.match(`<@`);
@@ -108,17 +106,38 @@ exports.getReplis = async (client, conversations) => {
 };
 
 exports.getDate = (members, allMessages) => {
+  // カウントを保存する配列を初期化
+  const nameCounts = [];
+
   allMessages.forEach((message) => {
-      if (
-        message.text.match(`|ええやん>`) ||
-        message.text.match(`|さすが>`) ||
-        message.text.match(`|ありがとう>`)
-      ) {
-        members.forEach((member) => {
-          if (message.text.match(member.id)) {
-            console.log(member.name);
+    if (
+      message.text.match(`|ええやん>`) ||
+      message.text.match(`|さすが>`) ||
+      message.text.match(`|ありがとう>`)
+    ) {
+      members.forEach((member) => {
+        if (message.text.match(member.id)) {
+          console.log(member.name);
+
+          // 配列内にメンバー名が存在するか確認し、カウントをインクリメント
+          const existingCount = nameCounts.find((countObj) => countObj[member.name]);
+          if (existingCount) {
+            existingCount[member.name]++;
+          } else {
+            nameCounts.push({ [member.name]: 1 });
           }
-        });
-      }
+        }
+      });
+    }
   });
+
+  // カウントを降順にソート
+  const sortedCounts = nameCounts.sort((a, b) => {
+    const countA = Object.values(a)[0];
+    const countB = Object.values(b)[0];
+    return countB - countA;
+  });
+
+  console.log(sortedCounts);
+  return sortedCounts;
 };
