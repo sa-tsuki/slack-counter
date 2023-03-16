@@ -5,58 +5,66 @@ let conversationsStore = {};
 exports.getWorkspaceMembers = async (client) => {
   try {
     const result = await client.users.list();
-    const members = result.members.map(member => {
+    const members = result.members.map((member) => {
       return {
-      id:member.id,
-      name: member.name  
-      }
-    })
-    return members
+        id: member.id,
+        name: member.name,
+      };
+    });
+    return members;
   } catch (error) {
     console.error(`Error fetching users: ${error}`);
     return [];
   }
-}
-
+};
 
 // コメント取得
 exports.getChannels = async (client) => {
   try {
     // Call the conversations.list method using the WebClient
     const result = await client.conversations.list();
-    
-    return result.channels
-  }
-  catch (error) {
+
+    return result.channels;
+  } catch (error) {
     console.error(error);
   }
-}
+};
 
-exports.getConversationHistory = async (client, startDate, endDate, channels) => {
-  const f_startDate = new Date(startDate)
-  const n_endDate = new Date(endDate)
-  const f_endDate = String(n_endDate).replace('00:00:00', '23:59:59')
-  const timestampStartDate = new Date(f_startDate).getTime().toString().slice(0, -3);
-  const timestampEndDate = new Date(f_endDate).getTime().toString().slice(0, -3);
-  
-  
+exports.getConversationHistory = async (
+  client,
+  startDate,
+  endDate,
+  channels
+) => {
+  const f_startDate = new Date(startDate);
+  const n_endDate = new Date(endDate);
+  const f_endDate = String(n_endDate).replace("00:00:00", "23:59:59");
+  const timestampStartDate = new Date(f_startDate)
+    .getTime()
+    .toString()
+    .slice(0, -3);
+  const timestampEndDate = new Date(f_endDate)
+    .getTime()
+    .toString()
+    .slice(0, -3);
+
   try {
     // Call the conversations.history method using WebClient
-//     ここは権限が降りてから
-//     channels.forEach(async(channel) => {
-//     let conversationHistory;
-//     const result = await client.conversations.history({
-//       channel: channel.id,
-//       oldest: timestampStartDate,
-//       latest: timestampEndDate,
-//     });
+    //     ここは権限が降りてから
+    //     channels.forEach(async(channel) => {
+    //     let conversationHistory;
+    //     const result = await client.conversations.history({
+    //       channel: channel.id,
+    //       oldest: timestampStartDate,
+    //       latest: timestampEndDate,
+    //     });
 
-//     conversationHistory = result.messages;
+    //     conversationHistory = result.messages;
 
-//     // Print results
-//     console.log(conversationHistory.length + " messages found in " + channel.id);
-//     })
-    
+    //     // Print results
+    //     console.log(conversationHistory.length + " messages found in " + channel.id);
+    //     })
+
     let conversationHistory;
     const result = await client.conversations.history({
       channel: channelId,
@@ -64,55 +72,56 @@ exports.getConversationHistory = async (client, startDate, endDate, channels) =>
       latest: timestampEndDate,
     });
 
-    conversationHistory = result.messages;    
-    return conversationHistory
-    
-  }
-  catch (error) {
+    conversationHistory = result.messages;
+    return conversationHistory;
+  } catch (error) {
     console.error(error);
   }
-}
+};
 
 // スレッド内のリプライ取得
 exports.getReplis = async (client, conversations) => {
-  let resultArray = []
-  
-    try {    
-      const conversationsArray = conversations.forEach(async (message, x) =>  {
-        const result = await client.conversations.replies({
-          channel:channelId,
-          ts: message.ts
-        });
-        
-        console.log("リザルト！！！！！！！！！！！", result.messages)
-        resultArray = [...resultArray, ...result.messages]
-      })    
+  let resultArray = [];
+
+  const conversationsArray = conversations.forEach(async (message, x) => {
+    let preResultArray = []
+    try {
+      const result = await client.conversations.replies({
+        channel: channelId,
+        ts: message.ts,
+      });
       
-      console.log("オブジェクト！！！！！！！！！！！！！！！", resultArray) 
-    
-      
-      resultArray = resultArray.filter(message => {
-        return message.text.match(`<@`)
-      })
-      
-    console.log("結果発表！！！！！！！！！！！！！！！", resultArray) 
-    return resultArray
-  }
-  catch (error) {
-    console.error(error);
-  }
-}
+      preResultArray = [...resultArray, ...result.messages];
+      resultArray = preResultArray
+    } catch (error) {
+      console.error(error);
+    }
+  });
+
+  console.log("オブジェクト！！！！！！！！！！！！！！！", resultArray);
+
+  resultArray.filter((message) => {
+    return message.text.match(`<@`);
+  });
+
+  console.log("結果発表！！！！！！！！！！！！！！！", resultArray);
+  return resultArray;
+};
 
 exports.getDate = (members, allMessages) => {
-  allMessages.forEach(message => {
-    if(message.text.match(`<@`)){
-         if(message.text.match(`|ええやん>`) || message.text.match(`|さすが>`) || message.text.match(`|ありがとう>`)){
-           members.forEach(member => {
-             if(message.text.match(member.id)){
-               console.log(member.name)
-             }
-           })
-         }
-     }
-  })
-}
+  allMessages.forEach((message) => {
+    if (message.text.match(`<@`)) {
+      if (
+        message.text.match(`|ええやん>`) ||
+        message.text.match(`|さすが>`) ||
+        message.text.match(`|ありがとう>`)
+      ) {
+        members.forEach((member) => {
+          if (message.text.match(member.id)) {
+            console.log(member.name);
+          }
+        });
+      }
+    }
+  });
+};
