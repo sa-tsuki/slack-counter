@@ -1,7 +1,7 @@
 const { App,LogLevel } = require('@slack/bolt');
 const store = require('./store');
 const {modalView} = require('./views');
-const {getWorkspaceMembers, getChannels, getConversationHistory, getReplis} = require('./count');
+const {getWorkspaceMembers, getChannels, getConversationHistory, getReplis, getDate} = require('./count');
 
 const app = new App({
   signingSecret: process.env.SLACK_SIGNING_SECRET,
@@ -41,8 +41,8 @@ app.view('start_count', async ({ ack, body, view, client, logger }) => {
   const members = await getWorkspaceMembers(client)
   const channels = await getChannels(client)
   const conversationHistory = await getConversationHistory(client, startDate, endDate, channels)
-  const allReplis = await getReplis(client, conversationHistory)
-  const data = getDate(members, allReplis)
+  const allMessages = await getReplis(client, conversationHistory)
+  const data = getDate(members, allMessages)
   
   // ユーザーにメッセージを送信
   try {

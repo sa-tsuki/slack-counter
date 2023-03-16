@@ -90,3 +90,9 @@ exports.getReplis = async (client, conversations) => {
     console.error(error);
   }
 }
+
+exports.getDate = (members, allMessages) => {
+  allMessages.forEach(message => {
+    if(message.text)
+  })
+}
