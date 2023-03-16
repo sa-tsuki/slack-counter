@@ -102,28 +102,24 @@ exports.getReplis = async (client, conversations) => {
     return message.text.match(`<@`);
   });
   
-  console.log("リザルーーーーーーーーーーーーど",formetterdArray)
 
   return formetterdArray;
 };
 
 // スレッド内のリプライ取得
 exports.getDate = (members, allMessages) => {
-  
-  console.log(allMessages)
-  // カウントを保存する配列を初期化
   const nameCounts = [];
 
-  const patterns = [/|ええやん>/, /|さすが>/, /|ありがとう>/];
+  const patterns = [/\|ええやん>/, /\|さすが>/, /\|ありがとう>/];
 
   allMessages.forEach((message) => {
-    if (patterns.some((pattern) => pattern.test(message.text))) {
+    const matchedPattern = patterns.some((pattern) => pattern.test(message.text));
+
+    if (matchedPattern) {
       members.forEach((member) => {
         const mentionPattern = new RegExp(`<@${member.id}>`);
         if (mentionPattern.test(message.text)) {
-          console.log(member.name);
 
-          // 配列内にメンバー名が存在するか確認し、カウントをインクリメント
           const existingCount = nameCounts.find((countObj) => countObj[member.name]);
           if (existingCount) {
             existingCount[member.name]++;
@@ -135,7 +131,6 @@ exports.getDate = (members, allMessages) => {
     }
   });
 
-  // カウントを降順にソート
   const sortedCounts = nameCounts.sort((a, b) => {
     const countA = Object.values(a)[0];
     const countB = Object.values(b)[0];
