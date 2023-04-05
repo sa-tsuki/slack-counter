@@ -35,7 +35,10 @@ exports.getChannels = async (client) => {
 // パブリックチャンネルにアプリインストール
 exports.installAppToPublicChannels = async (client, channels) => {
   try {
+    // console.log("■■■■■■■■■■■■■■■■",channels)
     for (const channel of channels) {
+      console.log()
+      if(channel.is_archived === true) return
       await client.conversations.join({
         channel: channel.id,
       });

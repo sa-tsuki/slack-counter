@@ -40,16 +40,16 @@ app.view('start_count', async ({ ack, body, view, client, logger }) => {
   
   const members = await getWorkspaceMembers(client)
   const channels = await getChannels(client)
-  await installAppToPublicChannels(client)
-  const conversationHistory = await getConversationHistory(client, startDate, endDate, channels)
-  const allMessages = await getReplis(client, conversationHistory)
-  const data = await getDate(members, allMessages)
+  await installAppToPublicChannels(client, channels)
+  // const conversationHistory = await getConversationHistory(client, startDate, endDate, channels)
+  // const allMessages = await getReplis(client, conversationHistory)
+  // const data = await getDate(members, allMessages)
   
   // ユーザーにメッセージを送信
   try {
     await client.chat.postMessage({
       channel: user,
-      text: startDate + endDate + data
+      text: startDate + endDate
     });
   }
   catch (error) {
