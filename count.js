@@ -36,13 +36,16 @@ exports.getChannels = async (client) => {
 exports.installAppToPublicChannels = async (client, channels) => {
   try {
     // console.log("■■■■■■■■■■■■■■■■",channels)
-    for (const channel of channels) {
-      console.log()
-      if(channel.is_archived === true) return
-      await client.conversations.join({
-        channel: channel.id,
-      });
+  for (const channel of channels) {
+    console.log("結果",channel.is_archived)
+    if (channel.is_archived === true) continue;
+    try {
+      await client.conversations.join({ channel: channel.id });
+      console.log(`チャンネル ${channel.name} に参加しました`);
+    } catch (error) {
+      console.error(`チャンネル ${channel.name} への参加に失敗しました: ${error}`);
     }
+  }
 
     return console.log("success install the app");
   } catch (error) {
@@ -72,7 +75,6 @@ exports.getConversationHistory = async (
     let conversationHistory;
     //     ここは権限が降りてから
     channels.forEach(async (channel) => {
-      
       const result = await client.conversations.history({
         channel: channel.id,
         oldest: timestampStartDate,
@@ -85,9 +87,8 @@ exports.getConversationHistory = async (
       console.log(
         conversationHistory.length + " messages found in " + channel.id
       );
-      
-    conversationHistory = result.messages;
-      
+
+      conversationHistory = result.messages;
     });
 
     // let conversationHistory;
@@ -96,8 +97,8 @@ exports.getConversationHistory = async (
     //   oldest: timestampStartDate,
     //   latest: timestampEndDate,
     // });
-    
-    console.log('■■■■■■■■■■■■' , conversationHistory)
+
+    console.log("■■■■■■■■■■■■", conversationHistory);
 
     return conversationHistory;
   } catch (error) {
