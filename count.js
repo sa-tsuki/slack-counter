@@ -18,17 +18,33 @@ exports.getWorkspaceMembers = async (client) => {
   }
 };
 
-// コメント取得
+// チャンネル取得
 exports.getChannels = async (client) => {
   try {
     // Call the conversations.list method using the WebClient
-    const result = await client.conversations.list();
+    const result = await client.conversations.list({
+      types: "public_channel"
+    });
 
     return result.channels;
   } catch (error) {
     console.error(error);
   }
 };
+
+// パブリックチャンネルにアプリインストール
+exports.installAppToPublicChannels = async (client, channels) => {
+    try {
+    // Call the conversations.list method using the WebClient
+    const result = await client.conversations.join({
+      types: "public_channel"
+    });
+
+    return result.channels;
+  } catch (error) {
+    console.error(error);
+  }
+}
 
 exports.getConversationHistory = async (
   client,
