@@ -23,7 +23,7 @@ exports.getChannels = async (client) => {
   try {
     // Call the conversations.list method using the WebClient
     const result = await client.conversations.list({
-      types: "public_channel"
+      types: "public_channel",
     });
 
     return result.channels;
@@ -34,17 +34,18 @@ exports.getChannels = async (client) => {
 
 // パブリックチャンネルにアプリインストール
 exports.installAppToPublicChannels = async (client, channels) => {
-    try {
-    // Call the conversations.list method using the WebClient
-    const result = await client.conversations.join({
-      types: "public_channel"
-    });
+  try {
+    for (const channel of channels) {
+      await client.conversations.join({
+        channel: channel.id,
+      });
+    }
 
-    return result.channels;
+    return console.log("success install the app");
   } catch (error) {
     console.error(error);
   }
-}
+};
 
 exports.getConversationHistory = async (
   client,
@@ -65,30 +66,36 @@ exports.getConversationHistory = async (
     .slice(0, -3);
 
   try {
-    // Call the conversations.history method using WebClient
-    //     ここは権限が降りてから
-    //     channels.forEach(async(channel) => {
-    //     let conversationHistory;
-    //     const result = await client.conversations.history({
-    //       channel: channel.id,
-    //       oldest: timestampStartDate,
-    //       latest: timestampEndDate,
-    //     });
-
-    //     conversationHistory = result.messages;
-
-    //     // Print results
-    //     console.log(conversationHistory.length + " messages found in " + channel.id);
-    //     })
-
     let conversationHistory;
-    const result = await client.conversations.history({
-      channel: channelId,
-      oldest: timestampStartDate,
-      latest: timestampEndDate,
+    //     ここは権限が降りてから
+    channels.forEach(async (channel) => {
+      
+      const result = await client.conversations.history({
+        channel: channel.id,
+        oldest: timestampStartDate,
+        latest: timestampEndDate,
+      });
+
+      conversationHistory = result.messages;
+
+      // Print results
+      console.log(
+        conversationHistory.length + " messages found in " + channel.id
+      );
+      
+    conversationHistory = result.messages;
+      
     });
 
-    conversationHistory = result.messages;
+    // let conversationHistory;
+    // const result = await client.conversations.history({
+    //   channel: channelId,
+    //   oldest: timestampStartDate,
+    //   latest: timestampEndDate,
+    // });
+    
+    console.log('■■■■■■■■■■■■' , conversationHistory)
+
     return conversationHistory;
   } catch (error) {
     console.error(error);
@@ -100,24 +107,24 @@ exports.getReplis = async (client, conversations) => {
   let resultArray = [];
 
   // Promise.all と map を使用してすべての非同期処理が完了するのを待つ
-  await Promise.all(conversations.map(async (message, x) => {
-    try {
-      const result = await client.conversations.replies({
-        channel: channelId,
-        ts: message.ts,
-      });
-      
-      resultArray = [...resultArray, ...result.messages];
-    } catch (error) {
-      console.error(error);
-    }
-  }));
+  await Promise.all(
+    conversations.map(async (message, x) => {
+      try {
+        const result = await client.conversations.replies({
+          channel: channelId,
+          ts: message.ts,
+        });
 
+        resultArray = [...resultArray, ...result.messages];
+      } catch (error) {
+        console.error(error);
+      }
+    })
+  );
 
-  const formetterdArray  = resultArray.filter((message) => {
+  const formetterdArray = resultArray.filter((message) => {
     return message.text.match(`<@`);
   });
-  
 
   return formetterdArray;
 };
@@ -129,14 +136,17 @@ exports.getDate = (members, allMessages) => {
   const patterns = [/\|ええやん>/, /\|さすが>/, /\|ありがとう>/];
 
   allMessages.forEach((message) => {
-    const matchedPattern = patterns.some((pattern) => pattern.test(message.text));
+    const matchedPattern = patterns.some((pattern) =>
+      pattern.test(message.text)
+    );
 
     if (matchedPattern) {
       members.forEach((member) => {
         const mentionPattern = new RegExp(`<@${member.id}>`);
         if (mentionPattern.test(message.text)) {
-
-          const existingCount = nameCounts.find((countObj) => countObj[member.name]);
+          const existingCount = nameCounts.find(
+            (countObj) => countObj[member.name]
+          );
           if (existingCount) {
             existingCount[member.name]++;
           } else {
@@ -153,7 +163,7 @@ exports.getDate = (members, allMessages) => {
     return countB - countA;
   });
 
-  console.log('カウント！！！！！！！！！！！！１', nameCounts)
+  console.log("カウント！！！！！！！！！！！！１", nameCounts);
   console.log("これ！！！！！！！！！！！！！！！！！！！！１", sortedCounts);
   return sortedCounts;
 };
