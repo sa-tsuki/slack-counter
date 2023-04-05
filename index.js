@@ -48,7 +48,7 @@ app.view('start_count', async ({ ack, body, view, client, logger }) => {
   try {
     await client.chat.postMessage({
       channel: user,
-      text: startDate + endDate
+      text: startDate + endDate + data
     });
   }
   catch (error) {

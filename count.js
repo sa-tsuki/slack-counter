@@ -137,6 +137,7 @@ exports.getDate = (members, allMessages) => {
     return countB - countA;
   });
 
-  console.log(sortedCounts);
+  console.log('カウント！！！！！！！！！！！！１', nameCounts)
+  console.log("これ！！！！！！！！！！！！！！！！！！！！１", sortedCounts);
   return sortedCounts;
 };
